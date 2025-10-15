@@ -1,0 +1,3 @@
+mutation LoginAccount($data: LoginAccountInput!) {
+    loginAccount(data: $data)
+}
