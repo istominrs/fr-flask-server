@@ -33,11 +33,17 @@ export type CreateAccountInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAccount: Scalars['Boolean']['output'];
+  verifyAccount: Scalars['Boolean']['output'];
 };
 
 
 export type MutationCreateAccountArgs = {
   data: CreateAccountInput;
+};
+
+
+export type MutationVerifyAccountArgs = {
+  data: VerifyAccountInput;
 };
 
 export type Query = {
@@ -50,12 +56,23 @@ export type QueryFindAccountByEmailArgs = {
   email: Scalars['String']['input'];
 };
 
+export type VerifyAccountInput = {
+  token: Scalars['String']['input'];
+};
+
 export type CreateAccountMutationVariables = Exact<{
   data: CreateAccountInput;
 }>;
 
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: boolean };
+
+export type VerifyAccountMutationVariables = Exact<{
+  data: VerifyAccountInput;
+}>;
+
+
+export type VerifyAccountMutation = { __typename?: 'Mutation', verifyAccount: boolean };
 
 
 export const CreateAccountDocument = gql`
@@ -89,3 +106,34 @@ export function useCreateAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccountMutation>;
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
+export const VerifyAccountDocument = gql`
+    mutation VerifyAccount($data: VerifyAccountInput!) {
+  verifyAccount(data: $data)
+}
+    `;
+export type VerifyAccountMutationFn = Apollo.MutationFunction<VerifyAccountMutation, VerifyAccountMutationVariables>;
+
+/**
+ * __useVerifyAccountMutation__
+ *
+ * To run a mutation, you first call `useVerifyAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyAccountMutation, { data, loading, error }] = useVerifyAccountMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useVerifyAccountMutation(baseOptions?: Apollo.MutationHookOptions<VerifyAccountMutation, VerifyAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyAccountMutation, VerifyAccountMutationVariables>(VerifyAccountDocument, options);
+      }
+export type VerifyAccountMutationHookResult = ReturnType<typeof useVerifyAccountMutation>;
+export type VerifyAccountMutationResult = Apollo.MutationResult<VerifyAccountMutation>;
+export type VerifyAccountMutationOptions = Apollo.BaseMutationOptions<VerifyAccountMutation, VerifyAccountMutationVariables>;
