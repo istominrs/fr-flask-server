@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google'
 import { ReactNode } from 'react'
 
 import { ApolloClientProvider } from '@/providers/ApolloClientProvider'
+import { ToastProvider } from '@/providers/ToastProvider'
 
 import '../styles/globals.css'
 
@@ -23,7 +24,10 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={`${geist.className} antialiased`}>
-				<ApolloClientProvider>{children}</ApolloClientProvider>
+				<ApolloClientProvider>
+					<ToastProvider />
+					{children}
+				</ApolloClientProvider>
 			</body>
 		</html>
 	)

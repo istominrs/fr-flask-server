@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { AuthWrapper } from '@/components/features/auth/AuthWrapper'
 import { Button } from '@/components/ui/Button'
@@ -13,6 +14,8 @@ import {
 	FormLabel
 } from '@/components/ui/Form'
 import { Input } from '@/components/ui/Input'
+
+import { useCreateAccountMutation } from '@/graphql/generated/output'
 
 import {
 	TypeCreateAccountSchema,
@@ -28,10 +31,19 @@ export function CreateAccountForm() {
 		}
 	})
 
+	const [create, { loading: isLoadingCreate }] = useCreateAccountMutation({
+		onCompleted() {
+			toast.success('Account created')
+		},
+		onError() {
+			toast.error('Account creation error')
+		}
+	})
+
 	const { isValid } = form.formState
 
 	function onSubmit(data: TypeCreateAccountSchema) {
-		console.log(data)
+		create({ variables: { data } })
 	}
 
 	return (
@@ -51,6 +63,7 @@ export function CreateAccountForm() {
 								<FormControl>
 									<Input
 										placeholder='johndoe@example.com'
+										disabled={isLoadingCreate}
 										{...field}
 									/>
 								</FormControl>
@@ -66,6 +79,7 @@ export function CreateAccountForm() {
 								<FormControl>
 									<Input
 										placeholder='********'
+										disabled={isLoadingCreate}
 										type='password'
 										{...field}
 									/>
@@ -73,7 +87,10 @@ export function CreateAccountForm() {
 							</FormItem>
 						)}
 					/>
-					<Button className='mt-2 w-full' disabled={!isValid}>
+					<Button
+						className='mt-2 w-full'
+						disabled={!isValid || isLoadingCreate}
+					>
 						Continue
 					</Button>
 				</form>
