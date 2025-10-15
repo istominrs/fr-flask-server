@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 import { ApolloClientProvider } from '@/providers/ApolloClientProvider'
 import { ToastProvider } from '@/providers/ToastProvider'
 
-import '../styles/globals.css'
+import '@/styles/globals.css'
 
 const geist = Geist({
 	subsets: ['latin']

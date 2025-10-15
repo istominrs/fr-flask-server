@@ -12,58 +12,58 @@ import { Button } from '@/components/ui/Button'
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel
 } from '@/components/ui/Form'
 import { Input } from '@/components/ui/Input'
 
-import { useCreateAccountMutation } from '@/graphql/generated/output'
+import { useResetPasswordMutation } from '@/graphql/generated/output'
 
 import {
-	type TypeCreateAccountSchema,
-	createAccountSchema
-} from '@/schemas/auth/create-account.schema'
+	type TypeResetPasswordSchema,
+	resetPasswordSchema
+} from '@/schemas/auth/reset-password.schema'
 
-export function CreateAccountForm() {
+export function ResetPasswordForm() {
 	const [isSuccess, setIsSuccess] = useState(false)
 
-	const form = useForm<TypeCreateAccountSchema>({
-		resolver: zodResolver(createAccountSchema),
+	const form = useForm<TypeResetPasswordSchema>({
+		resolver: zodResolver(resetPasswordSchema),
 		defaultValues: {
-			email: '',
-			password: ''
+			email: ''
 		}
 	})
 
-	const [create, { loading: isLoadingCreate }] = useCreateAccountMutation({
-		onCompleted() {
-			setIsSuccess(true)
-		},
-		onError() {
-			toast.error('Account creation error')
-		}
-	})
+	const [resetPassword, { loading: isLoadingReset }] =
+		useResetPasswordMutation({
+			onCompleted() {
+				setIsSuccess(true)
+			},
+			onError() {
+				toast.error('Password reset error')
+			}
+		})
 
 	const { isValid } = form.formState
 
-	function onSubmit(data: TypeCreateAccountSchema) {
-		create({ variables: { data } })
+	function onSubmit(data: TypeResetPasswordSchema) {
+		resetPassword({ variables: { data } })
 	}
 
 	return (
 		<AuthWrapper
-			heading='Create Account'
+			heading='Reset password'
 			backButtonLabel='Already have an account? Login'
 			backButtonHref='/account/login'
 		>
 			{isSuccess ? (
 				<Alert>
 					<CircleCheck className='size-4' />
-					<AlertTitle>Account Successfully Created!</AlertTitle>
+					<AlertTitle>Link sent!</AlertTitle>
 					<AlertDescription>
-						We've sent a confirmation email. Please check your inbox to
-						activate your account
+						We have sent a password reset link to your email
 					</AlertDescription>
 				</Alert>
 			) : (
@@ -81,35 +81,21 @@ export function CreateAccountForm() {
 									<FormControl>
 										<Input
 											placeholder='johndoe@example.com'
-											disabled={isLoadingCreate}
+											disabled={isLoadingReset}
 											{...field}
 										/>
 									</FormControl>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input
-											placeholder='********'
-											disabled={isLoadingCreate}
-											type='password'
-											{...field}
-										/>
-									</FormControl>
+									<FormDescription>
+										The email you used during registration
+									</FormDescription>
 								</FormItem>
 							)}
 						/>
 						<Button
 							className='mt-2 w-full'
-							disabled={!isValid || isLoadingCreate}
+							disabled={!isValid || isLoadingReset}
 						>
-							Create account
+							Reset password
 						</Button>
 					</form>
 				</Form>

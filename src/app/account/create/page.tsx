@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { CreateAccountForm } from '@/components/features/auth/forms/CreateAccountForm'
 
 export const metadata: Metadata = {
-	title: 'Create Account'
+	title: 'Create new account'
 }
 
 export default function CreateAccountPage() {

@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -19,7 +20,7 @@ import { Input } from '@/components/ui/Input'
 import { useLoginAccountMutation } from '@/graphql/generated/output'
 
 import {
-	TypeLoginAccountSchema,
+	type TypeLoginAccountSchema,
 	loginAccountSchema
 } from '@/schemas/auth/login-account.schema'
 
@@ -79,7 +80,15 @@ export function LoginAccountForm() {
 						name='password'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Password</FormLabel>
+								<div className='item-center flex justify-between'>
+									<FormLabel>Password</FormLabel>
+									<Link
+										href='/account/recovery'
+										className='ml-auto inline-block text-sm'
+									>
+										Forgot password?
+									</Link>
+								</div>
 								<FormControl>
 									<Input
 										placeholder='********'
@@ -95,7 +104,7 @@ export function LoginAccountForm() {
 						className='mt-2 w-full'
 						disabled={!isValid || isLoadingLogin}
 					>
-						Continue
+						Login
 					</Button>
 				</form>
 			</Form>
