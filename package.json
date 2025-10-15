@@ -5,16 +5,22 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "codegen": "graphql-codegen --config graphql.config.ts"
   },
   "dependencies": {
+    "@apollo/client": "^4.0.7",
     "@graphql-codegen/cli": "^6.0.0",
+    "@graphql-codegen/typescript": "^5.0.2",
+    "@graphql-codegen/typescript-operations": "^5.0.2",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.3",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "axios": "^1.12.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
     "geist": "^1.5.1",
     "graphql": "^16.11.0",
     "lucide-react": "^0.545.0",

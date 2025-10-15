@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
 import { ReactNode } from 'react'
 
+import { ApolloClientProvider } from '@/providers/ApolloClientProvider'
+
 import '../styles/globals.css'
 
 const geist = Geist({
@@ -20,7 +22,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${geist.className} antialiased`}>{children}</body>
+			<body className={`${geist.className} antialiased`}>
+				<ApolloClientProvider>{children}</ApolloClientProvider>
+			</body>
 		</html>
 	)
 }
