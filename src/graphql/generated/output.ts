@@ -22,6 +22,7 @@ export type AccountInfo = {
   __typename?: 'AccountInfo';
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
+  isTotpEnabled: Scalars['Boolean']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
 
@@ -40,6 +41,11 @@ export type CreateAccountInput = {
   password: Scalars['String']['input'];
 };
 
+export type EnableTotpInput = {
+  pin: Scalars['String']['input'];
+  secret: Scalars['String']['input'];
+};
+
 export type LoginAccountInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -51,6 +57,8 @@ export type Mutation = {
   changePassword: Scalars['Boolean']['output'];
   clearSessionCookie: Scalars['Boolean']['output'];
   createAccount: Scalars['Boolean']['output'];
+  disableTotp: Scalars['Boolean']['output'];
+  enableTotp: Scalars['Boolean']['output'];
   loginAccount: Scalars['Boolean']['output'];
   newPassword: Scalars['Boolean']['output'];
   resetPassword: Scalars['Boolean']['output'];
@@ -70,6 +78,11 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateAccountArgs = {
   data: CreateAccountInput;
+};
+
+
+export type MutationEnableTotpArgs = {
+  data: EnableTotpInput;
 };
 
 
@@ -102,6 +115,7 @@ export type Query = {
   __typename?: 'Query';
   findAccountByEmail: AccountInfo;
   findProfile: AccountInfo;
+  generateTotpSecret: TotpInfo;
 };
 
 
@@ -111,6 +125,12 @@ export type QueryFindAccountByEmailArgs = {
 
 export type ResetPasswordInput = {
   email: Scalars['String']['input'];
+};
+
+export type TotpInfo = {
+  __typename?: 'TotpInfo';
+  qrcodeUrl: Scalars['String']['output'];
+  secret: Scalars['String']['output'];
 };
 
 export type VerifyAccountInput = {
@@ -171,10 +191,27 @@ export type ClearSessionCookieMutationVariables = Exact<{ [key: string]: never; 
 
 export type ClearSessionCookieMutation = { __typename?: 'Mutation', clearSessionCookie: boolean };
 
+export type DisableTotpMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DisableTotpMutation = { __typename?: 'Mutation', disableTotp: boolean };
+
+export type EnableTotpMutationVariables = Exact<{
+  data: EnableTotpInput;
+}>;
+
+
+export type EnableTotpMutation = { __typename?: 'Mutation', enableTotp: boolean };
+
 export type FindProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProfileQuery = { __typename?: 'Query', findProfile: { __typename?: 'AccountInfo', email: string } };
+export type FindProfileQuery = { __typename?: 'Query', findProfile: { __typename?: 'AccountInfo', email: string, isTotpEnabled: boolean } };
+
+export type GenerateTotpSecretQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GenerateTotpSecretQuery = { __typename?: 'Query', generateTotpSecret: { __typename?: 'TotpInfo', qrcodeUrl: string, secret: string } };
 
 
 export const CreateAccountDocument = gql`
@@ -424,10 +461,72 @@ export function useClearSessionCookieMutation(baseOptions?: Apollo.MutationHookO
 export type ClearSessionCookieMutationHookResult = ReturnType<typeof useClearSessionCookieMutation>;
 export type ClearSessionCookieMutationResult = Apollo.MutationResult<ClearSessionCookieMutation>;
 export type ClearSessionCookieMutationOptions = Apollo.BaseMutationOptions<ClearSessionCookieMutation, ClearSessionCookieMutationVariables>;
+export const DisableTotpDocument = gql`
+    mutation DisableTotp {
+  disableTotp
+}
+    `;
+export type DisableTotpMutationFn = Apollo.MutationFunction<DisableTotpMutation, DisableTotpMutationVariables>;
+
+/**
+ * __useDisableTotpMutation__
+ *
+ * To run a mutation, you first call `useDisableTotpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDisableTotpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [disableTotpMutation, { data, loading, error }] = useDisableTotpMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDisableTotpMutation(baseOptions?: Apollo.MutationHookOptions<DisableTotpMutation, DisableTotpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DisableTotpMutation, DisableTotpMutationVariables>(DisableTotpDocument, options);
+      }
+export type DisableTotpMutationHookResult = ReturnType<typeof useDisableTotpMutation>;
+export type DisableTotpMutationResult = Apollo.MutationResult<DisableTotpMutation>;
+export type DisableTotpMutationOptions = Apollo.BaseMutationOptions<DisableTotpMutation, DisableTotpMutationVariables>;
+export const EnableTotpDocument = gql`
+    mutation EnableTotp($data: EnableTotpInput!) {
+  enableTotp(data: $data)
+}
+    `;
+export type EnableTotpMutationFn = Apollo.MutationFunction<EnableTotpMutation, EnableTotpMutationVariables>;
+
+/**
+ * __useEnableTotpMutation__
+ *
+ * To run a mutation, you first call `useEnableTotpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEnableTotpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [enableTotpMutation, { data, loading, error }] = useEnableTotpMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEnableTotpMutation(baseOptions?: Apollo.MutationHookOptions<EnableTotpMutation, EnableTotpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EnableTotpMutation, EnableTotpMutationVariables>(EnableTotpDocument, options);
+      }
+export type EnableTotpMutationHookResult = ReturnType<typeof useEnableTotpMutation>;
+export type EnableTotpMutationResult = Apollo.MutationResult<EnableTotpMutation>;
+export type EnableTotpMutationOptions = Apollo.BaseMutationOptions<EnableTotpMutation, EnableTotpMutationVariables>;
 export const FindProfileDocument = gql`
     query FindProfile {
   findProfile {
     email
+    isTotpEnabled
   }
 }
     `;
@@ -463,3 +562,43 @@ export type FindProfileQueryHookResult = ReturnType<typeof useFindProfileQuery>;
 export type FindProfileLazyQueryHookResult = ReturnType<typeof useFindProfileLazyQuery>;
 export type FindProfileSuspenseQueryHookResult = ReturnType<typeof useFindProfileSuspenseQuery>;
 export type FindProfileQueryResult = Apollo.QueryResult<FindProfileQuery, FindProfileQueryVariables>;
+export const GenerateTotpSecretDocument = gql`
+    query GenerateTotpSecret {
+  generateTotpSecret {
+    qrcodeUrl
+    secret
+  }
+}
+    `;
+
+/**
+ * __useGenerateTotpSecretQuery__
+ *
+ * To run a query within a React component, call `useGenerateTotpSecretQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenerateTotpSecretQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGenerateTotpSecretQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGenerateTotpSecretQuery(baseOptions?: Apollo.QueryHookOptions<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>(GenerateTotpSecretDocument, options);
+      }
+export function useGenerateTotpSecretLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>(GenerateTotpSecretDocument, options);
+        }
+export function useGenerateTotpSecretSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>(GenerateTotpSecretDocument, options);
+        }
+export type GenerateTotpSecretQueryHookResult = ReturnType<typeof useGenerateTotpSecretQuery>;
+export type GenerateTotpSecretLazyQueryHookResult = ReturnType<typeof useGenerateTotpSecretLazyQuery>;
+export type GenerateTotpSecretSuspenseQueryHookResult = ReturnType<typeof useGenerateTotpSecretSuspenseQuery>;
+export type GenerateTotpSecretQueryResult = Apollo.QueryResult<GenerateTotpSecretQuery, GenerateTotpSecretQueryVariables>;
