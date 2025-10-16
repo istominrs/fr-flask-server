@@ -1,3 +1,4 @@
+import { DeactivateCard } from '@/components/features/user/account/DeactivateCard'
 import { ChangeEmailForm } from '@/components/features/user/account/forms/ChangeEmailForm'
 import { ChangePasswordForm } from '@/components/features/user/account/forms/ChangePasswordForm'
 import { TotpWrapper } from '@/components/features/user/account/totp/TotpWrapper'
@@ -37,6 +38,11 @@ export function Settings() {
 							description='Set up two-factor authentication and auto-renewals for enhanced protection of your data'
 						/>
 						<TotpWrapper />
+						<Heading
+							title='Deactivation'
+							description='If you want to temporarily or permanently disable your account, use this option. Be aware of the consequences'
+						/>
+						<DeactivateCard />
 					</div>
 				</TabsContent>
 			</Tabs>
