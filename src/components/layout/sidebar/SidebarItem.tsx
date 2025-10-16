@@ -42,7 +42,7 @@ export function SidebarItem({ route }: SidebarItemProps) {
 			variant='ghost'
 			asChild
 		>
-			<Link href={route.href} className='flex items-start gap-x-4'>
+			<Link href={route.href} className='flex items-center gap-x-4'>
 				<route.icon className='mr-0 size-5' />
 				{route.label}
 			</Link>

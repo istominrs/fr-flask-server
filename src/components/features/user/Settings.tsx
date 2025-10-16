@@ -1,4 +1,11 @@
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/common/Tabs'
+import { ChangeEmailForm } from '@/components/features/user/account/forms/ChangeEmailForm'
+import { ChangePasswordForm } from '@/components/features/user/account/forms/ChangePasswordForm'
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger
+} from '@/components/ui/common/Tabs'
 import { Heading } from '@/components/ui/elements/Heading'
 
 export function Settings() {
@@ -16,6 +23,16 @@ export function Settings() {
 					<TabsTrigger value='notifications'>Notifications</TabsTrigger>
 					<TabsTrigger value='sessions'>Sessions</TabsTrigger>
 				</TabsList>
+				<TabsContent value='account'>
+					<div className='mt-5 space-y-6'>
+						<Heading
+							title='Account'
+							description='Manage your account settings, including access changes, security, and deactivation options'
+						/>
+						<ChangeEmailForm />
+						<ChangePasswordForm />
+					</div>
+				</TabsContent>
 			</Tabs>
 		</div>
 	)
