@@ -1,5 +1,6 @@
 import { ChangeEmailForm } from '@/components/features/user/account/forms/ChangeEmailForm'
 import { ChangePasswordForm } from '@/components/features/user/account/forms/ChangePasswordForm'
+import { TotpWrapper } from '@/components/features/user/account/totp/TotpWrapper'
 import {
 	Tabs,
 	TabsContent,
@@ -31,6 +32,11 @@ export function Settings() {
 						/>
 						<ChangeEmailForm />
 						<ChangePasswordForm />
+						<Heading
+							title='Security'
+							description='Set up two-factor authentication and auto-renewals for enhanced protection of your data'
+						/>
+						<TotpWrapper />
 					</div>
 				</TabsContent>
 			</Tabs>
