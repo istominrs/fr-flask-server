@@ -1,3 +1,5 @@
+'use client'
+
 import { Skeleton } from '@/components/ui/common/Skeleton'
 
 export function ChangeEmailFormSkeleton() {
