@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { AuthWrapper } from '@/components/features/auth/AuthWrapper'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/common/Button'
 import {
 	Form,
 	FormControl,
@@ -14,8 +14,8 @@ import {
 	FormField,
 	FormItem,
 	FormLabel
-} from '@/components/ui/Form'
-import { Input } from '@/components/ui/Input'
+} from '@/components/ui/common/Form'
+import { Input } from '@/components/ui/common/Input'
 
 import { useNewPasswordMutation } from '@/graphql/generated/output'
 

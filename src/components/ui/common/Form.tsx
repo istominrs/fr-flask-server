@@ -19,7 +19,7 @@ import {
 	useFormState
 } from 'react-hook-form'
 
-import { Label } from '@/components/ui/Label'
+import { Label } from '@/components/ui/common/Label'
 
 import { cn } from '@/utils/tw-merge'
 

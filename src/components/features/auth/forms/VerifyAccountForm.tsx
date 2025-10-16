@@ -9,17 +9,23 @@ import { AuthWrapper } from '@/components/features/auth/AuthWrapper'
 
 import { useVerifyAccountMutation } from '@/graphql/generated/output'
 
+import { useAuth } from '@/hooks/useAuth'
+
 interface VerifyAccountFormProps {
 	token: string
 }
 
 export function VerifyAccountForm(props: VerifyAccountFormProps) {
+	const { auth } = useAuth()
+
 	const router = useRouter()
 
 	const { token } = props
 
 	const [verify] = useVerifyAccountMutation({
 		onCompleted() {
+			auth()
+			toast.success('Account verified')
 			router.push('/dashboard/settings')
 		},
 		onError() {

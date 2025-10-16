@@ -7,17 +7,19 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { AuthWrapper } from '@/components/features/auth/AuthWrapper'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/common/Button'
 import {
 	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel
-} from '@/components/ui/Form'
-import { Input } from '@/components/ui/Input'
+} from '@/components/ui/common/Form'
+import { Input } from '@/components/ui/common/Input'
 
 import { useLoginAccountMutation } from '@/graphql/generated/output'
+
+import { useAuth } from '@/hooks/useAuth'
 
 import {
 	type TypeLoginAccountSchema,
@@ -25,6 +27,8 @@ import {
 } from '@/schemas/auth/login-account.schema'
 
 export function LoginAccountForm() {
+	const { auth } = useAuth()
+
 	const router = useRouter()
 
 	const form = useForm<TypeLoginAccountSchema>({
@@ -37,6 +41,7 @@ export function LoginAccountForm() {
 
 	const [login, { loading: isLoadingLogin }] = useLoginAccountMutation({
 		onCompleted() {
+			auth()
 			toast.success('Login successfully')
 			router.push('/dashboard/settings')
 		},
