@@ -1,6 +1,8 @@
 import {
+	Backpack,
 	Bell,
 	CreditCard,
+	Key,
 	LayoutDashboard,
 	ListChecks,
 	Settings
@@ -24,7 +26,7 @@ export function DashboardNavigation() {
 		{
 			label: 'Backtests',
 			href: '/dashboard/backtests',
-			icon: CreditCard
+			icon: Backpack
 		},
 		{
 			label: 'Alerts',
@@ -34,7 +36,7 @@ export function DashboardNavigation() {
 		{
 			label: 'Accounts',
 			href: '/dashboard/accounts',
-			icon: CreditCard
+			icon: Key
 		},
 		{
 			label: 'Settings',
