@@ -1,4 +1,6 @@
+import { LucideIcon } from 'lucide-react'
 import { PropsWithChildren, ReactNode } from 'react'
+import { IconType } from 'react-icons'
 
 import { Card } from '@/components/ui/common/Card'
 
@@ -6,6 +8,7 @@ interface CardContainerProps {
 	heading: string
 	description: string
 	rightContent?: ReactNode
+	Icon?: IconType | LucideIcon
 }
 
 export function CardContainer({
