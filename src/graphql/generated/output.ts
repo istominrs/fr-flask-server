@@ -20,14 +20,24 @@ export type Scalars = {
 
 export type AccountInfo = {
   __typename?: 'AccountInfo';
-  createdAt: Scalars['DateTime']['output'];
-  email: Scalars['String']['output'];
-  isTotpEnabled: Scalars['Boolean']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  requiresConfirmation?: Maybe<Scalars['Boolean']['output']>;
+  userInfo?: Maybe<UserInfo>;
 };
 
 export type ChangeEmailInput = {
   email: Scalars['String']['input'];
+};
+
+export type ChangeNotificationsSettingsInfo = {
+  __typename?: 'ChangeNotificationsSettingsInfo';
+  notificationSettings: NotificationSettingsInfo;
+  telegramToken?: Maybe<Scalars['String']['output']>;
+};
+
+export type ChangeNotificationsSettingsInput = {
+  emailNotifications: Scalars['Boolean']['input'];
+  siteNotifications: Scalars['Boolean']['input'];
+  telegramNotifications: Scalars['Boolean']['input'];
 };
 
 export type ChangePasswordInput = {
@@ -41,9 +51,30 @@ export type CreateAccountInput = {
   password: Scalars['String']['input'];
 };
 
+export type DeactivateAccountInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  pin?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DeviceInfo = {
+  __typename?: 'DeviceInfo';
+  browser: Scalars['String']['output'];
+  os: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+};
+
 export type EnableTotpInput = {
   pin: Scalars['String']['input'];
   secret: Scalars['String']['input'];
+};
+
+export type LocationInfo = {
+  __typename?: 'LocationInfo';
+  city: Scalars['String']['output'];
+  country: Scalars['String']['output'];
+  latitude: Scalars['Float']['output'];
+  longitude: Scalars['Float']['output'];
 };
 
 export type LoginAccountInput = {
@@ -54,13 +85,16 @@ export type LoginAccountInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   changeEmail: Scalars['Boolean']['output'];
+  changeNotificationsSettings: ChangeNotificationsSettingsInfo;
   changePassword: Scalars['Boolean']['output'];
   clearSessionCookie: Scalars['Boolean']['output'];
   createAccount: Scalars['Boolean']['output'];
+  deactivateAccount: AccountInfo;
   disableTotp: Scalars['Boolean']['output'];
   enableTotp: Scalars['Boolean']['output'];
   loginAccount: Scalars['Boolean']['output'];
   newPassword: Scalars['Boolean']['output'];
+  removeSession: Scalars['Boolean']['output'];
   resetPassword: Scalars['Boolean']['output'];
   verifyAccount: Scalars['Boolean']['output'];
 };
@@ -71,6 +105,11 @@ export type MutationChangeEmailArgs = {
 };
 
 
+export type MutationChangeNotificationsSettingsArgs = {
+  data: ChangeNotificationsSettingsInput;
+};
+
+
 export type MutationChangePasswordArgs = {
   data: ChangePasswordInput;
 };
@@ -78,6 +117,11 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateAccountArgs = {
   data: CreateAccountInput;
+};
+
+
+export type MutationDeactivateAccountArgs = {
+  data: DeactivateAccountInput;
 };
 
 
@@ -96,6 +140,11 @@ export type MutationNewPasswordArgs = {
 };
 
 
+export type MutationRemoveSessionArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput;
 };
@@ -111,10 +160,19 @@ export type NewPasswordInput = {
   token: Scalars['String']['input'];
 };
 
+export type NotificationSettingsInfo = {
+  __typename?: 'NotificationSettingsInfo';
+  emailNotifications: Scalars['Boolean']['output'];
+  siteNotifications: Scalars['Boolean']['output'];
+  telegramNotifications: Scalars['Boolean']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   findAccountByEmail: AccountInfo;
-  findProfile: AccountInfo;
+  findCurrentSession: SessionInfo;
+  findProfile: UserInfo;
+  findSessionsByUser: Array<SessionInfo>;
   generateTotpSecret: TotpInfo;
 };
 
@@ -127,10 +185,36 @@ export type ResetPasswordInput = {
   email: Scalars['String']['input'];
 };
 
+export type SessionInfo = {
+  __typename?: 'SessionInfo';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  metadata: SessionMetadataInfo;
+  userId: Scalars['String']['output'];
+};
+
+export type SessionMetadataInfo = {
+  __typename?: 'SessionMetadataInfo';
+  device: DeviceInfo;
+  ip: Scalars['String']['output'];
+  location: LocationInfo;
+};
+
 export type TotpInfo = {
   __typename?: 'TotpInfo';
   qrcodeUrl: Scalars['String']['output'];
   secret: Scalars['String']['output'];
+};
+
+export type UserInfo = {
+  __typename?: 'UserInfo';
+  createdAt: Scalars['DateTime']['output'];
+  email: Scalars['String']['output'];
+  isDeactivated: Scalars['Boolean']['output'];
+  isTotpEnabled: Scalars['Boolean']['output'];
+  notificationSettings: NotificationSettingsInfo;
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type VerifyAccountInput = {
@@ -143,6 +227,13 @@ export type CreateAccountMutationVariables = Exact<{
 
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: boolean };
+
+export type DeactivateAccountMutationVariables = Exact<{
+  data: DeactivateAccountInput;
+}>;
+
+
+export type DeactivateAccountMutation = { __typename?: 'Mutation', deactivateAccount: { __typename?: 'AccountInfo', requiresConfirmation?: boolean | null, userInfo?: { __typename?: 'UserInfo', isDeactivated: boolean } | null } };
 
 export type LoginAccountMutationVariables = Exact<{
   data: LoginAccountInput;
@@ -179,6 +270,13 @@ export type ChangeEmailMutationVariables = Exact<{
 
 export type ChangeEmailMutation = { __typename?: 'Mutation', changeEmail: boolean };
 
+export type ChangeNotificationsSettingsMutationVariables = Exact<{
+  data: ChangeNotificationsSettingsInput;
+}>;
+
+
+export type ChangeNotificationsSettingsMutation = { __typename?: 'Mutation', changeNotificationsSettings: { __typename?: 'ChangeNotificationsSettingsInfo', telegramToken?: string | null, notificationSettings: { __typename?: 'NotificationSettingsInfo', siteNotifications: boolean, telegramNotifications: boolean, emailNotifications: boolean } } };
+
 export type ChangePasswordMutationVariables = Exact<{
   data: ChangePasswordInput;
 }>;
@@ -203,10 +301,27 @@ export type EnableTotpMutationVariables = Exact<{
 
 export type EnableTotpMutation = { __typename?: 'Mutation', enableTotp: boolean };
 
+export type RemoveSessionMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type RemoveSessionMutation = { __typename?: 'Mutation', removeSession: boolean };
+
+export type FindCurrenSessionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindCurrenSessionQuery = { __typename?: 'Query', findCurrentSession: { __typename?: 'SessionInfo', id: string, createdAt: any, metadata: { __typename?: 'SessionMetadataInfo', ip: string, location: { __typename?: 'LocationInfo', country: string, city: string, latitude: number, longitude: number }, device: { __typename?: 'DeviceInfo', browser: string, os: string } } } };
+
 export type FindProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProfileQuery = { __typename?: 'Query', findProfile: { __typename?: 'AccountInfo', email: string, isTotpEnabled: boolean } };
+export type FindProfileQuery = { __typename?: 'Query', findProfile: { __typename?: 'UserInfo', email: string, isTotpEnabled: boolean, notificationSettings: { __typename?: 'NotificationSettingsInfo', siteNotifications: boolean, telegramNotifications: boolean, emailNotifications: boolean } } };
+
+export type FindSessionsByUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindSessionsByUserQuery = { __typename?: 'Query', findSessionsByUser: Array<{ __typename?: 'SessionInfo', id: string, createdAt: any, metadata: { __typename?: 'SessionMetadataInfo', ip: string, location: { __typename?: 'LocationInfo', country: string, city: string, latitude: number, longitude: number }, device: { __typename?: 'DeviceInfo', browser: string, os: string } } }> };
 
 export type GenerateTotpSecretQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -245,6 +360,42 @@ export function useCreateAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccountMutation>;
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
+export const DeactivateAccountDocument = gql`
+    mutation DeactivateAccount($data: DeactivateAccountInput!) {
+  deactivateAccount(data: $data) {
+    userInfo {
+      isDeactivated
+    }
+    requiresConfirmation
+  }
+}
+    `;
+export type DeactivateAccountMutationFn = Apollo.MutationFunction<DeactivateAccountMutation, DeactivateAccountMutationVariables>;
+
+/**
+ * __useDeactivateAccountMutation__
+ *
+ * To run a mutation, you first call `useDeactivateAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeactivateAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deactivateAccountMutation, { data, loading, error }] = useDeactivateAccountMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useDeactivateAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeactivateAccountMutation, DeactivateAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeactivateAccountMutation, DeactivateAccountMutationVariables>(DeactivateAccountDocument, options);
+      }
+export type DeactivateAccountMutationHookResult = ReturnType<typeof useDeactivateAccountMutation>;
+export type DeactivateAccountMutationResult = Apollo.MutationResult<DeactivateAccountMutation>;
+export type DeactivateAccountMutationOptions = Apollo.BaseMutationOptions<DeactivateAccountMutation, DeactivateAccountMutationVariables>;
 export const LoginAccountDocument = gql`
     mutation LoginAccount($data: LoginAccountInput!) {
   loginAccount(data: $data)
@@ -400,6 +551,44 @@ export function useChangeEmailMutation(baseOptions?: Apollo.MutationHookOptions<
 export type ChangeEmailMutationHookResult = ReturnType<typeof useChangeEmailMutation>;
 export type ChangeEmailMutationResult = Apollo.MutationResult<ChangeEmailMutation>;
 export type ChangeEmailMutationOptions = Apollo.BaseMutationOptions<ChangeEmailMutation, ChangeEmailMutationVariables>;
+export const ChangeNotificationsSettingsDocument = gql`
+    mutation ChangeNotificationsSettings($data: ChangeNotificationsSettingsInput!) {
+  changeNotificationsSettings(data: $data) {
+    notificationSettings {
+      siteNotifications
+      telegramNotifications
+      emailNotifications
+    }
+    telegramToken
+  }
+}
+    `;
+export type ChangeNotificationsSettingsMutationFn = Apollo.MutationFunction<ChangeNotificationsSettingsMutation, ChangeNotificationsSettingsMutationVariables>;
+
+/**
+ * __useChangeNotificationsSettingsMutation__
+ *
+ * To run a mutation, you first call `useChangeNotificationsSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeNotificationsSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeNotificationsSettingsMutation, { data, loading, error }] = useChangeNotificationsSettingsMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useChangeNotificationsSettingsMutation(baseOptions?: Apollo.MutationHookOptions<ChangeNotificationsSettingsMutation, ChangeNotificationsSettingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeNotificationsSettingsMutation, ChangeNotificationsSettingsMutationVariables>(ChangeNotificationsSettingsDocument, options);
+      }
+export type ChangeNotificationsSettingsMutationHookResult = ReturnType<typeof useChangeNotificationsSettingsMutation>;
+export type ChangeNotificationsSettingsMutationResult = Apollo.MutationResult<ChangeNotificationsSettingsMutation>;
+export type ChangeNotificationsSettingsMutationOptions = Apollo.BaseMutationOptions<ChangeNotificationsSettingsMutation, ChangeNotificationsSettingsMutationVariables>;
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($data: ChangePasswordInput!) {
   changePassword(data: $data)
@@ -522,11 +711,100 @@ export function useEnableTotpMutation(baseOptions?: Apollo.MutationHookOptions<E
 export type EnableTotpMutationHookResult = ReturnType<typeof useEnableTotpMutation>;
 export type EnableTotpMutationResult = Apollo.MutationResult<EnableTotpMutation>;
 export type EnableTotpMutationOptions = Apollo.BaseMutationOptions<EnableTotpMutation, EnableTotpMutationVariables>;
+export const RemoveSessionDocument = gql`
+    mutation RemoveSession($id: String!) {
+  removeSession(id: $id)
+}
+    `;
+export type RemoveSessionMutationFn = Apollo.MutationFunction<RemoveSessionMutation, RemoveSessionMutationVariables>;
+
+/**
+ * __useRemoveSessionMutation__
+ *
+ * To run a mutation, you first call `useRemoveSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeSessionMutation, { data, loading, error }] = useRemoveSessionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveSessionMutation(baseOptions?: Apollo.MutationHookOptions<RemoveSessionMutation, RemoveSessionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveSessionMutation, RemoveSessionMutationVariables>(RemoveSessionDocument, options);
+      }
+export type RemoveSessionMutationHookResult = ReturnType<typeof useRemoveSessionMutation>;
+export type RemoveSessionMutationResult = Apollo.MutationResult<RemoveSessionMutation>;
+export type RemoveSessionMutationOptions = Apollo.BaseMutationOptions<RemoveSessionMutation, RemoveSessionMutationVariables>;
+export const FindCurrenSessionDocument = gql`
+    query FindCurrenSession {
+  findCurrentSession {
+    id
+    createdAt
+    metadata {
+      location {
+        country
+        city
+        latitude
+        longitude
+      }
+      device {
+        browser
+        os
+      }
+      ip
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindCurrenSessionQuery__
+ *
+ * To run a query within a React component, call `useFindCurrenSessionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindCurrenSessionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindCurrenSessionQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindCurrenSessionQuery(baseOptions?: Apollo.QueryHookOptions<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>(FindCurrenSessionDocument, options);
+      }
+export function useFindCurrenSessionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>(FindCurrenSessionDocument, options);
+        }
+export function useFindCurrenSessionSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>(FindCurrenSessionDocument, options);
+        }
+export type FindCurrenSessionQueryHookResult = ReturnType<typeof useFindCurrenSessionQuery>;
+export type FindCurrenSessionLazyQueryHookResult = ReturnType<typeof useFindCurrenSessionLazyQuery>;
+export type FindCurrenSessionSuspenseQueryHookResult = ReturnType<typeof useFindCurrenSessionSuspenseQuery>;
+export type FindCurrenSessionQueryResult = Apollo.QueryResult<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>;
 export const FindProfileDocument = gql`
     query FindProfile {
   findProfile {
     email
     isTotpEnabled
+    notificationSettings {
+      siteNotifications
+      telegramNotifications
+      emailNotifications
+    }
   }
 }
     `;
@@ -562,6 +840,59 @@ export type FindProfileQueryHookResult = ReturnType<typeof useFindProfileQuery>;
 export type FindProfileLazyQueryHookResult = ReturnType<typeof useFindProfileLazyQuery>;
 export type FindProfileSuspenseQueryHookResult = ReturnType<typeof useFindProfileSuspenseQuery>;
 export type FindProfileQueryResult = Apollo.QueryResult<FindProfileQuery, FindProfileQueryVariables>;
+export const FindSessionsByUserDocument = gql`
+    query FindSessionsByUser {
+  findSessionsByUser {
+    id
+    createdAt
+    metadata {
+      location {
+        country
+        city
+        latitude
+        longitude
+      }
+      device {
+        browser
+        os
+      }
+      ip
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindSessionsByUserQuery__
+ *
+ * To run a query within a React component, call `useFindSessionsByUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindSessionsByUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindSessionsByUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindSessionsByUserQuery(baseOptions?: Apollo.QueryHookOptions<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>(FindSessionsByUserDocument, options);
+      }
+export function useFindSessionsByUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>(FindSessionsByUserDocument, options);
+        }
+export function useFindSessionsByUserSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>(FindSessionsByUserDocument, options);
+        }
+export type FindSessionsByUserQueryHookResult = ReturnType<typeof useFindSessionsByUserQuery>;
+export type FindSessionsByUserLazyQueryHookResult = ReturnType<typeof useFindSessionsByUserLazyQuery>;
+export type FindSessionsByUserSuspenseQueryHookResult = ReturnType<typeof useFindSessionsByUserSuspenseQuery>;
+export type FindSessionsByUserQueryResult = Apollo.QueryResult<FindSessionsByUserQuery, FindSessionsByUserQueryVariables>;
 export const GenerateTotpSecretDocument = gql`
     query GenerateTotpSecret {
   generateTotpSecret {
