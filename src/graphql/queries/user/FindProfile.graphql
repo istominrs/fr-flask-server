@@ -1,8 +1,10 @@
 query FindProfile {
     findProfile {
-        email
-        isTotpEnabled
-        notificationSettings {
+        accountInfo {
+            email
+            isTotpEnabled
+        }
+        notificationSettingsInfo {
             siteNotifications
             telegramNotifications
             emailNotifications

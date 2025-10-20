@@ -1,7 +1,9 @@
 mutation DeactivateAccount($data: DeactivateAccountInput!) {
     deactivateAccount(data: $data) {
-        userInfo {
-            isDeactivated
+        profile {
+            accountInfo {
+                isDeactivated
+            }
         }
         requiresConfirmation
     }

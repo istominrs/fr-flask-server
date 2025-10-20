@@ -20,8 +20,10 @@ export type Scalars = {
 
 export type AccountInfo = {
   __typename?: 'AccountInfo';
-  requiresConfirmation?: Maybe<Scalars['Boolean']['output']>;
-  userInfo?: Maybe<UserInfo>;
+  accountId: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  isDeactivated: Scalars['Boolean']['output'];
+  isTotpEnabled: Scalars['Boolean']['output'];
 };
 
 export type ChangeEmailInput = {
@@ -80,6 +82,7 @@ export type LocationInfo = {
 export type LoginAccountInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  pin?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
@@ -89,7 +92,7 @@ export type Mutation = {
   changePassword: Scalars['Boolean']['output'];
   clearSessionCookie: Scalars['Boolean']['output'];
   createAccount: Scalars['Boolean']['output'];
-  deactivateAccount: AccountInfo;
+  deactivateAccount: ProfileDetailsInfo;
   disableTotp: Scalars['Boolean']['output'];
   enableTotp: Scalars['Boolean']['output'];
   loginAccount: Scalars['Boolean']['output'];
@@ -167,18 +170,24 @@ export type NotificationSettingsInfo = {
   telegramNotifications: Scalars['Boolean']['output'];
 };
 
-export type Query = {
-  __typename?: 'Query';
-  findAccountByEmail: AccountInfo;
-  findCurrentSession: SessionInfo;
-  findProfile: UserInfo;
-  findSessionsByUser: Array<SessionInfo>;
-  generateTotpSecret: TotpInfo;
+export type ProfileDetailsInfo = {
+  __typename?: 'ProfileDetailsInfo';
+  profile: ProfileInfo;
+  requiresConfirmation: Scalars['Boolean']['output'];
 };
 
+export type ProfileInfo = {
+  __typename?: 'ProfileInfo';
+  accountInfo: AccountInfo;
+  notificationSettingsInfo: NotificationSettingsInfo;
+};
 
-export type QueryFindAccountByEmailArgs = {
-  email: Scalars['String']['input'];
+export type Query = {
+  __typename?: 'Query';
+  findCurrentSession: SessionInfo;
+  findProfile: ProfileInfo;
+  findSessionsByUser: Array<SessionInfo>;
+  generateTotpSecret: TotpInfo;
 };
 
 export type ResetPasswordInput = {
@@ -206,17 +215,6 @@ export type TotpInfo = {
   secret: Scalars['String']['output'];
 };
 
-export type UserInfo = {
-  __typename?: 'UserInfo';
-  createdAt: Scalars['DateTime']['output'];
-  email: Scalars['String']['output'];
-  isDeactivated: Scalars['Boolean']['output'];
-  isTotpEnabled: Scalars['Boolean']['output'];
-  notificationSettings: NotificationSettingsInfo;
-  updatedAt: Scalars['DateTime']['output'];
-  userId: Scalars['String']['output'];
-};
-
 export type VerifyAccountInput = {
   token: Scalars['String']['input'];
 };
@@ -233,7 +231,7 @@ export type DeactivateAccountMutationVariables = Exact<{
 }>;
 
 
-export type DeactivateAccountMutation = { __typename?: 'Mutation', deactivateAccount: { __typename?: 'AccountInfo', requiresConfirmation?: boolean | null, userInfo?: { __typename?: 'UserInfo', isDeactivated: boolean } | null } };
+export type DeactivateAccountMutation = { __typename?: 'Mutation', deactivateAccount: { __typename?: 'ProfileDetailsInfo', requiresConfirmation: boolean, profile: { __typename?: 'ProfileInfo', accountInfo: { __typename?: 'AccountInfo', isDeactivated: boolean } } } };
 
 export type LoginAccountMutationVariables = Exact<{
   data: LoginAccountInput;
@@ -316,7 +314,7 @@ export type FindCurrenSessionQuery = { __typename?: 'Query', findCurrentSession:
 export type FindProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProfileQuery = { __typename?: 'Query', findProfile: { __typename?: 'UserInfo', email: string, isTotpEnabled: boolean, notificationSettings: { __typename?: 'NotificationSettingsInfo', siteNotifications: boolean, telegramNotifications: boolean, emailNotifications: boolean } } };
+export type FindProfileQuery = { __typename?: 'Query', findProfile: { __typename?: 'ProfileInfo', accountInfo: { __typename?: 'AccountInfo', email: string, isTotpEnabled: boolean }, notificationSettingsInfo: { __typename?: 'NotificationSettingsInfo', siteNotifications: boolean, telegramNotifications: boolean, emailNotifications: boolean } } };
 
 export type FindSessionsByUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -363,8 +361,10 @@ export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAcco
 export const DeactivateAccountDocument = gql`
     mutation DeactivateAccount($data: DeactivateAccountInput!) {
   deactivateAccount(data: $data) {
-    userInfo {
-      isDeactivated
+    profile {
+      accountInfo {
+        isDeactivated
+      }
     }
     requiresConfirmation
   }
@@ -798,9 +798,11 @@ export type FindCurrenSessionQueryResult = Apollo.QueryResult<FindCurrenSessionQ
 export const FindProfileDocument = gql`
     query FindProfile {
   findProfile {
-    email
-    isTotpEnabled
-    notificationSettings {
+    accountInfo {
+      email
+      isTotpEnabled
+    }
+    notificationSettingsInfo {
       siteNotifications
       telegramNotifications
       emailNotifications
