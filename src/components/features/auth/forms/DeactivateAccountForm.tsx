@@ -58,6 +58,7 @@ export function DeactivateAccountForm() {
 				} else {
 					exit()
 					toast.success('You have successfully deactivated your account')
+					router.push('/')
 				}
 			},
 			onError: () => {
