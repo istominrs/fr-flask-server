@@ -33,7 +33,7 @@ export function ChangeEmailForm() {
 	const form = useForm<TypeChangeEmailSchema>({
 		resolver: zodResolver(changeEmailSchema),
 		values: {
-			email: user?.email || ''
+			email: user?.accountInfo.email || ''
 		}
 	})
 
