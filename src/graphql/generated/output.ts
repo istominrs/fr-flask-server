@@ -79,6 +79,11 @@ export type LocationInfo = {
   longitude: Scalars['Float']['output'];
 };
 
+export type LoginAccountInfo = {
+  __typename?: 'LoginAccountInfo';
+  requiresConfirmation: Scalars['Boolean']['output'];
+};
+
 export type LoginAccountInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -95,7 +100,7 @@ export type Mutation = {
   deactivateAccount: ProfileDetailsInfo;
   disableTotp: Scalars['Boolean']['output'];
   enableTotp: Scalars['Boolean']['output'];
-  loginAccount: Scalars['Boolean']['output'];
+  loginAccount: LoginAccountInfo;
   newPassword: Scalars['Boolean']['output'];
   removeSession: Scalars['Boolean']['output'];
   resetPassword: Scalars['Boolean']['output'];
@@ -238,7 +243,7 @@ export type LoginAccountMutationVariables = Exact<{
 }>;
 
 
-export type LoginAccountMutation = { __typename?: 'Mutation', loginAccount: boolean };
+export type LoginAccountMutation = { __typename?: 'Mutation', loginAccount: { __typename?: 'LoginAccountInfo', requiresConfirmation: boolean } };
 
 export type NewPasswordMutationVariables = Exact<{
   data: NewPasswordInput;
@@ -398,7 +403,9 @@ export type DeactivateAccountMutationResult = Apollo.MutationResult<DeactivateAc
 export type DeactivateAccountMutationOptions = Apollo.BaseMutationOptions<DeactivateAccountMutation, DeactivateAccountMutationVariables>;
 export const LoginAccountDocument = gql`
     mutation LoginAccount($data: LoginAccountInput!) {
-  loginAccount(data: $data)
+  loginAccount(data: $data) {
+    requiresConfirmation
+  }
 }
     `;
 export type LoginAccountMutationFn = Apollo.MutationFunction<LoginAccountMutation, LoginAccountMutationVariables>;

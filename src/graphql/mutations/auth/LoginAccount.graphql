@@ -1,3 +1,5 @@
 mutation LoginAccount($data: LoginAccountInput!) {
-    loginAccount(data: $data)
+    loginAccount(data: $data) {
+        requiresConfirmation
+    }
 }

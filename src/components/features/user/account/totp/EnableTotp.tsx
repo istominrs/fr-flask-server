@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { QRCodeSVG } from 'qrcode.react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -96,11 +97,12 @@ export function EnableTotp() {
 									? 'Scan the QR code to add TOTP'
 									: ''}
 							</span>
-							<img
-								src={generateSecret?.qrcodeUrl}
-								alt='QR'
-								className='rounded-lg'
-							/>
+							{generateSecret?.qrcodeUrl && (
+								<QRCodeSVG
+									value={generateSecret.qrcodeUrl}
+									size={256}
+								/>
+							)}
 						</div>
 						<div className='flex flex-col gap-2'>
 							<span className='text-muted-foreground text-center text-sm'>
