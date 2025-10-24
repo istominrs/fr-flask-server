@@ -24,9 +24,9 @@ import {
 	InputOTPSlot
 } from '@/components/ui/common/InputOTP'
 
-import {
-	LoginAccountMutation,
-	useLoginAccountMutation
+import { 
+	useLoginAccountMutation,
+	type LoginAccountMutation 
 } from '@/graphql/generated/output'
 
 import { useAuth } from '@/hooks/useAuth'
@@ -52,17 +52,14 @@ export function LoginAccountForm() {
 	})
 
 	const [login, { loading: isLoadingLogin }] = useLoginAccountMutation({
-		onCompleted() {
-			// if (data.loginAccount.requiresConfirmation) {
-			// 	setIsShowConfirm(true)
-			// } else {
-			// 	auth()
-			// 	toast.success('Login successfully')
-			// 	router.push('/dashboard/settings')
-			// }
-			auth()
-			toast.success('Login successfully')
-			router.push('/dashboard/settings')
+		onCompleted(data: LoginAccountMutation) {
+			if (data.loginAccount.requiresConfirmation) {
+				setIsShowConfirm(true)
+			} else {
+				auth()
+				toast.success('Login successfully')
+				router.push('/dashboard/settings')
+			}
 		},
 		onError() {
 			toast.error('Account creation error')
