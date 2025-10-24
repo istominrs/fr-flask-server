@@ -48,6 +48,11 @@ export type ChangePasswordInput = {
   repeatedNewPassword: Scalars['String']['input'];
 };
 
+export type ConfirmationInfo = {
+  __typename?: 'ConfirmationInfo';
+  requiresConfirmation: Scalars['Boolean']['output'];
+};
+
 export type CreateAccountInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -79,11 +84,6 @@ export type LocationInfo = {
   longitude: Scalars['Float']['output'];
 };
 
-export type LoginAccountInfo = {
-  __typename?: 'LoginAccountInfo';
-  requiresConfirmation: Scalars['Boolean']['output'];
-};
-
 export type LoginAccountInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -97,10 +97,10 @@ export type Mutation = {
   changePassword: Scalars['Boolean']['output'];
   clearSessionCookie: Scalars['Boolean']['output'];
   createAccount: Scalars['Boolean']['output'];
-  deactivateAccount: ProfileDetailsInfo;
+  deactivateAccount: ConfirmationInfo;
   disableTotp: Scalars['Boolean']['output'];
   enableTotp: Scalars['Boolean']['output'];
-  loginAccount: LoginAccountInfo;
+  loginAccount: ConfirmationInfo;
   newPassword: Scalars['Boolean']['output'];
   removeSession: Scalars['Boolean']['output'];
   resetPassword: Scalars['Boolean']['output'];
@@ -175,12 +175,6 @@ export type NotificationSettingsInfo = {
   telegramNotifications: Scalars['Boolean']['output'];
 };
 
-export type ProfileDetailsInfo = {
-  __typename?: 'ProfileDetailsInfo';
-  profile: ProfileInfo;
-  requiresConfirmation: Scalars['Boolean']['output'];
-};
-
 export type ProfileInfo = {
   __typename?: 'ProfileInfo';
   accountInfo: AccountInfo;
@@ -236,14 +230,14 @@ export type DeactivateAccountMutationVariables = Exact<{
 }>;
 
 
-export type DeactivateAccountMutation = { __typename?: 'Mutation', deactivateAccount: { __typename?: 'ProfileDetailsInfo', requiresConfirmation: boolean, profile: { __typename?: 'ProfileInfo', accountInfo: { __typename?: 'AccountInfo', isDeactivated: boolean } } } };
+export type DeactivateAccountMutation = { __typename?: 'Mutation', deactivateAccount: { __typename?: 'ConfirmationInfo', requiresConfirmation: boolean } };
 
 export type LoginAccountMutationVariables = Exact<{
   data: LoginAccountInput;
 }>;
 
 
-export type LoginAccountMutation = { __typename?: 'Mutation', loginAccount: { __typename?: 'LoginAccountInfo', requiresConfirmation: boolean } };
+export type LoginAccountMutation = { __typename?: 'Mutation', loginAccount: { __typename?: 'ConfirmationInfo', requiresConfirmation: boolean } };
 
 export type NewPasswordMutationVariables = Exact<{
   data: NewPasswordInput;
@@ -366,11 +360,6 @@ export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAcco
 export const DeactivateAccountDocument = gql`
     mutation DeactivateAccount($data: DeactivateAccountInput!) {
   deactivateAccount(data: $data) {
-    profile {
-      accountInfo {
-        isDeactivated
-      }
-    }
     requiresConfirmation
   }
 }
