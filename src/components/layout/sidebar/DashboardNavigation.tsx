@@ -1,9 +1,9 @@
 import {
 	Backpack,
 	Bell,
+	ChartPie,
 	CreditCard,
 	Key,
-	LayoutDashboard,
 	ListChecks,
 	Settings
 } from 'lucide-react'
@@ -16,7 +16,7 @@ export function DashboardNavigation() {
 		{
 			label: 'Overview',
 			href: '/dashboard/overview',
-			icon: LayoutDashboard
+			icon: ChartPie
 		},
 		{
 			label: 'Strategies',
@@ -39,14 +39,14 @@ export function DashboardNavigation() {
 			icon: Key
 		},
 		{
-			label: 'Settings',
-			href: '/dashboard/settings',
-			icon: Settings
-		},
-		{
 			label: 'Billing',
 			href: '/dashboard/billing',
 			icon: CreditCard
+		},
+		{
+			label: 'Settings',
+			href: '/dashboard/settings',
+			icon: Settings
 		}
 	]
 
