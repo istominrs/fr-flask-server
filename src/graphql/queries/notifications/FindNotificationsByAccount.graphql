@@ -1,0 +1,8 @@
+query FindNotificationsByAccount {
+    findNotificationsByAccount {
+        notificationId
+        message
+        type
+        createdAt
+    }
+}
