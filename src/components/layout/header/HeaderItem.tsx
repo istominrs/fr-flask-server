@@ -3,6 +3,10 @@
 import Link from 'next/link'
 
 import { Item } from '@/components/layout/header/item.interface'
+import {
+	NavigationMenuItem,
+	NavigationMenuLink
+} from '@/components/ui/common/NavigationMenu'
 
 interface HeaderItemProps {
 	item: Item
@@ -10,12 +14,10 @@ interface HeaderItemProps {
 
 export function HeaderItem({ item }: HeaderItemProps) {
 	return (
-		<Link
-			href={item.href}
-			scroll={false}
-			className='text-foreground hover:text-primary text-sm transition'
-		>
-			{item.label}
-		</Link>
+		<NavigationMenuItem>
+			<NavigationMenuLink asChild>
+				<Link href={item.href}>{item.label}</Link>
+			</NavigationMenuLink>
+		</NavigationMenuItem>
 	)
 }
