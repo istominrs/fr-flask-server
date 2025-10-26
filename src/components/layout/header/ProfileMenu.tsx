@@ -42,7 +42,7 @@ export function ProfileMenu() {
 		<>
 			<Notifications />
 			<DropdownMenu>
-				<DropdownMenuTrigger>
+				<DropdownMenuTrigger className='focus:outline-none focus-visible:ring-0'>
 					<User className='size-6' />
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='end' className='w-[230px]'>
