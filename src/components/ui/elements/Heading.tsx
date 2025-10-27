@@ -8,7 +8,8 @@ const headingSizes = cva('', {
 			sm: 'text-lg',
 			default: 'text-2xl',
 			lg: 'text-4xl',
-			xl: 'text-5xl'
+			xl: 'text-5xl',
+			'2xl': 'text-6xl'
 		}
 	},
 	defaultVariants: {
