@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 
+import { HeroImage } from '@/components/features/landing/HeroImage'
 import { HeroStepItem } from '@/components/features/landing/HeroStepItem'
 import { Step } from '@/components/features/landing/step.interface'
 
@@ -57,6 +58,14 @@ export function HeroFeature() {
 						<HeroStepItem key={index} step={step} />
 					))}
 				</ol>
+
+				<HeroImage
+					src='/images/strategy-create-preview.png'
+					alt='creating preview'
+					width={2021}
+					height={1255}
+					quality={100}
+				/>
 			</div>
 		</>
 	)
