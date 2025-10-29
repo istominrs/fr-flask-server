@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
 
 import { ApolloClientProvider } from '@/providers/ApolloClientProvider'
@@ -7,7 +7,7 @@ import { ToastProvider } from '@/providers/ToastProvider'
 
 import '@/styles/globals.css'
 
-const geist = Geist({
+const inter = Inter({
 	subsets: ['latin']
 })
 
@@ -23,7 +23,7 @@ export default async function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${geist.className} antialiased`}>
+			<body className={`${inter.className} antialiased`}>
 				<ApolloClientProvider>
 					<ToastProvider />
 					{children}
