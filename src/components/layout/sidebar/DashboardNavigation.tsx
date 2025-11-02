@@ -18,37 +18,37 @@ export function DashboardNavigation() {
 		{
 			label: 'Overview',
 			href: '/dashboard/overview',
-			icon: ChartPie
+			Icon: ChartPie
 		},
 		{
 			label: 'Strategies',
 			href: '/dashboard/strategies',
-			icon: ListChecks
+			Icon: ListChecks
 		},
 		{
 			label: 'Backtests',
 			href: '/dashboard/backtests',
-			icon: Backpack
+			Icon: Backpack
 		},
 		{
 			label: 'Alerts',
 			href: '/dashboard/alerts',
-			icon: Bell
+			Icon: Bell
 		},
 		{
 			label: 'Accounts',
 			href: '/dashboard/accounts',
-			icon: Key
+			Icon: Key
 		},
 		{
 			label: 'Billing',
 			href: '/dashboard/billing',
-			icon: CreditCard
+			Icon: CreditCard
 		},
 		{
 			label: 'Settings',
 			href: '/dashboard/settings',
-			icon: Settings
+			Icon: Settings
 		}
 	]
 

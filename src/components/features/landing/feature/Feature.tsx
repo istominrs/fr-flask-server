@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 import { ImageContainer } from '@/components/features/landing/ImageContainer'
+import { GradientBackground } from '@/components/features/landing/GradientBackground'
 import { FeatureStepItem } from '@/components/features/landing/feature/FeatureStepItem'
 import { Step } from '@/components/features/landing/feature/step.interface'
 
@@ -59,13 +60,15 @@ export function Feature() {
 					))}
 				</ol>
 
-				<ImageContainer
-					src='/images/strategy-create-preview.png'
-					alt='creating preview'
-					width={2021}
-					height={1255}
-					quality={100}
-				/>
+				<GradientBackground>
+					<ImageContainer
+						src='/images/strategy-create-preview.png'
+						alt='creating preview'
+						width={2021}
+						height={1255}
+						quality={100}
+					/>
+				</GradientBackground>
 			</div>
 		</>
 	)
