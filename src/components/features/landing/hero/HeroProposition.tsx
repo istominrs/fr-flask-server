@@ -1,6 +1,6 @@
 'use client'
 
-import { HeroImage } from '@/components/features/landing/HeroImage'
+import { ImageContainer } from '@/components/features/landing/ImageContainer'
 
 export function HeroProposition() {
 	return (
@@ -20,7 +20,7 @@ export function HeroProposition() {
 				</div>
 
 				<div>
-					<HeroImage
+					<ImageContainer
 						src='/images/dashboard-preview.png'
 						alt='product preview'
 						width={2318}

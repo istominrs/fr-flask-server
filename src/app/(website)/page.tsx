@@ -1,16 +1,15 @@
-import { HeroBanner } from '@/components/features/landing/HeroBanner'
-import { HeroFeature } from '@/components/features/landing/HeroFeature'
-import { HeroProposition } from '@/components/features/landing/HeroProposition'
-import { WidthLayoutContainer } from '@/components/layout/WidthLayoutContainer'
+import { CTA } from '@/components/features/landing/cta/CTA'
+import { FAQ } from '@/components/features/landing/faq/FAQ'
+import { Feature } from '@/components/features/landing/feature/Feature'
+import { Hero } from '@/components/features/landing/hero/Hero'
 
 export default async function HomePage() {
 	return (
 		<>
-			<WidthLayoutContainer className='mt-28 mb-12 flex flex-col items-center justify-center text-center sm:mt-40'>
-				<HeroBanner />
-			</WidthLayoutContainer>
-			<HeroProposition />
-			<HeroFeature />
+			<Hero />
+			<Feature />
+			<FAQ />
+			<CTA />
 		</>
 	)
 }

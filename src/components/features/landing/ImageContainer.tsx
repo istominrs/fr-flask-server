@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-interface HeroImageProps {
+interface ImageContainerProps {
 	src: string
 	alt: string
 	width: number
@@ -8,13 +8,13 @@ interface HeroImageProps {
 	quality: number
 }
 
-export function HeroImage({
+export function ImageContainer({
 	src,
 	alt,
 	width,
 	height,
 	quality
-}: HeroImageProps) {
+}: ImageContainerProps) {
 	return (
 		<div className='mx-auto max-w-6xl px-6 lg:px-8'>
 			<div className='mt-16 flow-root sm:mt-24'>

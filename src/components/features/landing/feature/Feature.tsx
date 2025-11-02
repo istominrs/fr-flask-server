@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 
-import { HeroImage } from '@/components/features/landing/HeroImage'
-import { HeroStepItem } from '@/components/features/landing/HeroStepItem'
-import { Step } from '@/components/features/landing/step.interface'
+import { ImageContainer } from '@/components/features/landing/ImageContainer'
+import { FeatureStepItem } from '@/components/features/landing/feature/FeatureStepItem'
+import { Step } from '@/components/features/landing/feature/step.interface'
 
-export function HeroFeature() {
+export function Feature() {
 	const steps: Step[] = [
 		{
 			number: 1,
@@ -55,11 +55,11 @@ export function HeroFeature() {
 
 				<ol className='my-8 space-y-4 pt-8 md:flex md:space-y-0 md:space-x-12'>
 					{steps.map((step, index) => (
-						<HeroStepItem key={index} step={step} />
+						<FeatureStepItem key={index} step={step} />
 					))}
 				</ol>
 
-				<HeroImage
+				<ImageContainer
 					src='/images/strategy-create-preview.png'
 					alt='creating preview'
 					width={2021}
