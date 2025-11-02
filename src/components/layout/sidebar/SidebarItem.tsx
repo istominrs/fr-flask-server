@@ -32,7 +32,7 @@ export function SidebarItem({ route }: SidebarItemProps) {
 				asChild
 			>
 				<Link href={route.href}>
-					<route.icon className='mr-0 size-5' />
+					<route.Icon className='mr-0 size-5' />
 				</Link>
 			</Button>
 		</Hint>
@@ -43,7 +43,7 @@ export function SidebarItem({ route }: SidebarItemProps) {
 			asChild
 		>
 			<Link href={route.href} className='flex items-center gap-x-4'>
-				<route.icon className='mr-0 size-5' />
+				<route.Icon className='mr-0 size-5' />
 				{route.label}
 			</Link>
 		</Button>

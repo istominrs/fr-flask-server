@@ -53,6 +53,11 @@ export type ConfirmationInfo = {
   requiresConfirmation: Scalars['Boolean']['output'];
 };
 
+export type ContactUsInput = {
+  email: Scalars['String']['input'];
+  message: Scalars['String']['input'];
+};
+
 export type CreateAccountInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -96,6 +101,7 @@ export type Mutation = {
   changeNotificationsSettings: ChangeNotificationsSettingsInfo;
   changePassword: Scalars['Boolean']['output'];
   clearSessionCookie: Scalars['Boolean']['output'];
+  contactUs: Scalars['Boolean']['output'];
   createAccount: Scalars['Boolean']['output'];
   deactivateAccount: ConfirmationInfo;
   disableTotp: Scalars['Boolean']['output'];
@@ -121,6 +127,11 @@ export type MutationChangeNotificationsSettingsArgs = {
 
 export type MutationChangePasswordArgs = {
   data: ChangePasswordInput;
+};
+
+
+export type MutationContactUsArgs = {
+  data: ContactUsInput;
 };
 
 
@@ -306,6 +317,13 @@ export type ClearSessionCookieMutationVariables = Exact<{ [key: string]: never; 
 
 
 export type ClearSessionCookieMutation = { __typename?: 'Mutation', clearSessionCookie: boolean };
+
+export type ContactUsMutationVariables = Exact<{
+  data: ContactUsInput;
+}>;
+
+
+export type ContactUsMutation = { __typename?: 'Mutation', contactUs: boolean };
 
 export type DisableTotpMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -707,6 +725,37 @@ export function useClearSessionCookieMutation(baseOptions?: Apollo.MutationHookO
 export type ClearSessionCookieMutationHookResult = ReturnType<typeof useClearSessionCookieMutation>;
 export type ClearSessionCookieMutationResult = Apollo.MutationResult<ClearSessionCookieMutation>;
 export type ClearSessionCookieMutationOptions = Apollo.BaseMutationOptions<ClearSessionCookieMutation, ClearSessionCookieMutationVariables>;
+export const ContactUsDocument = gql`
+    mutation ContactUs($data: ContactUsInput!) {
+  contactUs(data: $data)
+}
+    `;
+export type ContactUsMutationFn = Apollo.MutationFunction<ContactUsMutation, ContactUsMutationVariables>;
+
+/**
+ * __useContactUsMutation__
+ *
+ * To run a mutation, you first call `useContactUsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useContactUsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [contactUsMutation, { data, loading, error }] = useContactUsMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useContactUsMutation(baseOptions?: Apollo.MutationHookOptions<ContactUsMutation, ContactUsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ContactUsMutation, ContactUsMutationVariables>(ContactUsDocument, options);
+      }
+export type ContactUsMutationHookResult = ReturnType<typeof useContactUsMutation>;
+export type ContactUsMutationResult = Apollo.MutationResult<ContactUsMutation>;
+export type ContactUsMutationOptions = Apollo.BaseMutationOptions<ContactUsMutation, ContactUsMutationVariables>;
 export const DisableTotpDocument = gql`
     mutation DisableTotp {
   disableTotp
