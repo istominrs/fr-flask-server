@@ -40,8 +40,8 @@ export function Feature() {
 	]
 
 	return (
-		<>
-			<div className='mx-auto mt-32 mb-32 max-w-5xl sm:mt-56'>
+        <section id='how-it-works'>
+            <div className='mx-auto mt-32 mb-32 max-w-5xl sm:mt-56'>
 				<div className='mb-12 px-6 lg:px-8'>
 					<div className='mx-auto max-w-2xl sm:text-center'>
 						<h2 className='mt-2 text-4xl font-semibold text-gray-900 sm:text-5xl'>
@@ -70,6 +70,6 @@ export function Feature() {
 					/>
 				</GradientBackground>
 			</div>
-		</>
+        </section>
 	)
 }

@@ -6,11 +6,11 @@ import { WidthLayoutContainer } from '@/components/layout/WidthLayoutContainer'
 
 export function Hero() {
 	return (
-		<>
-			<WidthLayoutContainer className='mt-28 mb-12 flex flex-col items-center justify-center text-center sm:mt-40'>
-				<HeroBanner />
-			</WidthLayoutContainer>
-			<HeroProposition />
-		</>
+        <section id='about-us'>
+            <WidthLayoutContainer className='mt-28 mb-12 flex flex-col items-center justify-center text-center sm:mt-40'>
+                <HeroBanner />
+            </WidthLayoutContainer>
+            <HeroProposition />
+        </section>
 	)
 }
