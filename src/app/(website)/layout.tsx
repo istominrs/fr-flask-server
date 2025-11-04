@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react'
 
+import { Footer } from '@/components/layout/footer/Footer'
 import { Header } from '@/components/layout/header/Header'
 
 export default function WebsiteLayout({
@@ -12,6 +13,7 @@ export default function WebsiteLayout({
 					<Header />
 				</div>
 				{children}
+				<Footer />
 			</div>
 		</div>
 	)

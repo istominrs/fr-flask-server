@@ -19,7 +19,7 @@ export function HeaderNavigation() {
 		},
 		{
 			label: 'Plans & Pricing',
-			href: '#plans-and-pricing'
+			href: '/pricing'
 		},
 		{
 			label: 'FAQ',

@@ -32,7 +32,7 @@ export function CTA() {
 						className={buttonVariants({
 							size: 'lg',
 							className:
-								'mt-5 h-auto px-10 py-4 text-2xl font-bold text-blue-600',
+								'mt-6 h-auto px-10 py-4 text-xl font-bold text-blue-600',
 							variant: 'secondary'
 						})}
 						href='/dashboard/overview'
