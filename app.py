@@ -3,7 +3,7 @@ from datetime import datetime
 
 from recognition.face_detector import FaceDetector
 from recognition.face_recognizer import FaceRecognizerService
-from storage.fs_repo import enqueue_if_allowed
+from storage.fs_repo import enqueue_if_allowed, get_next_queued_entry, call_next_ticket, set_ticket_status
 from utils.image_utils import (
     load_image_from_form,
     load_image_from_base64,
@@ -64,13 +64,50 @@ def ingest_frame():
         jsonify(
             {
                 "enqueued": True,
-                "person_id": person_id,
                 "ticket_id": ticket_id,
-                "queued_at": datetime.now().isoformat(),
             }
         ),
         201,
     )
+
+
+@app.route("/queue/next", methods=["GET"])
+def queue_next():
+    """
+    Получить ближайшего в очереди (peek), не изменяя статус.
+    200 {"available": true, "entry": {...}} | 200 {"available": false}
+    """
+    entry = get_next_queued_entry()
+    if entry:
+        return jsonify({"available": True, "entry": entry}), 200
+    return jsonify({"available": False}), 200
+
+
+@app.route("/queue/call_next", methods=["POST"])
+def queue_call_next():
+    """
+    Пометить ближайшего 'queued' как 'called'.
+    200 {"called": true, "entry": {...}} | 204 (если очередь пуста)
+    """
+    entry = call_next_ticket()
+    if entry:
+        return jsonify({"called": True, "entry": entry}), 200
+    return "", 204
+
+
+@app.route("/tickets/<int:ticket_id>/status", methods=["POST"])
+def ticket_set_status(ticket_id: int):
+    """
+    Сменить статус билета. Тело: {"status": "done" | "queued" | "called" | ...}
+    """
+    data = request.get_json(silent=True) or {}
+    status = str(data.get("status", "")).strip().lower()
+    if not status:
+        return jsonify({"ok": False, "error": "status_required"}), 400
+    ok = set_ticket_status(ticket_id, status)
+    if not ok:
+        return jsonify({"ok": False, "error": "not_found"}), 404
+    return jsonify({"ok": True, "ticket_id": ticket_id, "status": status}), 200
 
 
 if __name__ == "__main__":

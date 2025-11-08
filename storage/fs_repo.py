@@ -159,3 +159,22 @@ def set_ticket_status(ticket_id: int, status: str) -> bool:
     if changed:
         _write_queue(entries)
     return changed
+
+
+def get_next_queued_entry() -> Optional[dict]:
+    entries = _read_queue()
+    for e in entries:
+        if e.get("status") == "queued":
+            return e
+    return None
+
+
+def call_next_ticket() -> Optional[dict]:
+    entries = _read_queue()
+    for e in entries:
+        if e.get("status") == "queued":
+            e["status"] = "called"
+            e["called_at"] = datetime.utcnow().isoformat()
+            _write_queue(entries)
+            return e
+    return None
