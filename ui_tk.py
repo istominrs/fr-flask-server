@@ -4,6 +4,7 @@ from tkinter import messagebox
 from dataclasses import dataclass
 import requests
 
+CLIENT = "http://127.0.0.1:8080"
 SERVER = "http://127.0.0.1:8080"
 
 
@@ -68,20 +69,35 @@ class QueueUI:
 
     @classmethod
     def _call_next(cls):
-        r = requests.post(f"{SERVER}/queue/call_next", timeout=5)
-        if r.status_code == 200:
-            e = r.json().get("entry")
-            return TicketEntry(
-                id=e["id"],
-                person_id=e["person_id"],
-                status=e["status"],
-                created_at=e["created_at"],
-                called_at=e.get("called_at"),
-            )
-        elif r.status_code == 204:
+        server_response = requests.post(f"{SERVER}/queue/call_next", timeout=5)
+        if server_response.status_code == 204:
             return None
-        else:
-            raise RuntimeError(f"HTTP {r.status_code}: {r.text}")
+        if server_response.status_code != 200:
+            raise RuntimeError(f"HTTP {server_response.status_code}: {server_response.text}")
+
+        data = server_response.json()
+        e = data.get("entry")
+        if not e:
+            raise RuntimeError("No 'entry' in server response")
+
+        try:
+            client_response = requests.post(
+                f"{CLIENT}/queue/call_next",
+                json={"ticket_id": e["id"]},
+                timeout=5,
+            )
+            if client_response.status_code != 200:
+                raise RuntimeError(f"HTTP {client_response.status_code}: {client_response.text}")
+        except Exception as ex:
+            raise RuntimeError(f"Client notify failed: {ex}") from ex
+
+        return TicketEntry(
+            id=e["id"],
+            person_id=e["person_id"],
+            status=e["status"],
+            created_at=e["created_at"],
+            called_at=e.get("called_at"),
+        )
 
     @classmethod
     def _set_status(cls, ticket_id: int, status: str):
