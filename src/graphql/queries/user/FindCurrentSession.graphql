@@ -1,4 +1,4 @@
-query FindCurrenSession {
+query FindCurrentSession {
     findCurrentSession {
         id
         createdAt

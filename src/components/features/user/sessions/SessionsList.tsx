@@ -5,13 +5,13 @@ import { Heading } from '@/components/ui/elements/Heading'
 import { ToggleCardSkeleton } from '@/components/ui/elements/ToggleCardSkeleton'
 
 import {
-	useFindCurrenSessionQuery,
+	useFindCurrentSessionQuery,
 	useFindSessionsByUserQuery
 } from '@/graphql/generated/output'
 
 export function SessionsList() {
 	const { data: sessionData, loading: isLoadingCurrent } =
-		useFindCurrenSessionQuery()
+		useFindCurrentSessionQuery()
 	const currentSession = sessionData?.findCurrentSession!
 
 	const { data: sessionsData, loading: isLoadingSessions } =

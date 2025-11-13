@@ -30,14 +30,14 @@ export function DashboardNavigation() {
 			href: '/dashboard/backtests',
 			Icon: Backpack
 		},
+		// {
+		// 	label: 'Alerts',
+		// 	href: '/dashboard/alerts',
+		// 	Icon: Bell
+		// },
 		{
-			label: 'Alerts',
-			href: '/dashboard/alerts',
-			Icon: Bell
-		},
-		{
-			label: 'Accounts',
-			href: '/dashboard/accounts',
+			label: 'Stocks',
+			href: '/dashboard/stocks',
 			Icon: Key
 		},
 		{

@@ -8,7 +8,6 @@ import {
 	DialogTrigger
 } from '@/components/ui/common/Dialog'
 
-
 import { FindSessionsByUserQuery } from '@/graphql/generated/output'
 
 import { formatDate } from '@/utils/format-date'

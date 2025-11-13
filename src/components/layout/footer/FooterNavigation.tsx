@@ -47,7 +47,7 @@ export function FooterNavigation() {
 				},
 				{
 					label: 'Accounts',
-					href: '/dashboard/accounts'
+					href: '/dashboard/stocks'
 				}
 			]
 		}

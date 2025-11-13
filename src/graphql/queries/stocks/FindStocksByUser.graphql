@@ -1,0 +1,11 @@
+query FindStocksByUser {
+    findStocksByUser {
+        stockId
+        title
+        stock
+        status
+        key
+        userId
+        createdAt
+    }
+}

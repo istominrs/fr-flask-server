@@ -1,0 +1,3 @@
+mutation RemoveStock($id: String!) {
+    removeStock(id: $id)
+}

@@ -110,6 +110,7 @@ export type Mutation = {
   logoutAccount: Scalars['Boolean']['output'];
   newPassword: Scalars['Boolean']['output'];
   removeSession: Scalars['Boolean']['output'];
+  removeStock: Scalars['Boolean']['output'];
   resetPassword: Scalars['Boolean']['output'];
   verifyAccount: Scalars['Boolean']['output'];
 };
@@ -165,6 +166,11 @@ export type MutationRemoveSessionArgs = {
 };
 
 
+export type MutationRemoveStockArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput;
 };
@@ -213,6 +219,7 @@ export type Query = {
   findNotificationsUnreadCount: Scalars['Int']['output'];
   findProfile: ProfileInfo;
   findSessionsByUser: Array<SessionInfo>;
+  findStocksByUser: Array<StockInfo>;
   generateTotpSecret: TotpInfo;
 };
 
@@ -233,6 +240,17 @@ export type SessionMetadataInfo = {
   device: DeviceInfo;
   ip: Scalars['String']['output'];
   location: LocationInfo;
+};
+
+export type StockInfo = {
+  __typename?: 'StockInfo';
+  createdAt: Scalars['DateTime']['output'];
+  key: Scalars['String']['output'];
+  status: Scalars['String']['output'];
+  stock: Scalars['String']['output'];
+  stockId: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type TotpInfo = {
@@ -291,6 +309,13 @@ export type VerifyAccountMutationVariables = Exact<{
 
 
 export type VerifyAccountMutation = { __typename?: 'Mutation', verifyAccount: boolean };
+
+export type RemoveStockMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type RemoveStockMutation = { __typename?: 'Mutation', removeStock: boolean };
 
 export type ChangeEmailMutationVariables = Exact<{
   data: ChangeEmailInput;
@@ -354,10 +379,15 @@ export type FindNotificationsUnreadCountQueryVariables = Exact<{ [key: string]: 
 
 export type FindNotificationsUnreadCountQuery = { __typename?: 'Query', findNotificationsUnreadCount: number };
 
-export type FindCurrenSessionQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindStocksByUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindCurrenSessionQuery = { __typename?: 'Query', findCurrentSession: { __typename?: 'SessionInfo', id: string, createdAt: any, metadata: { __typename?: 'SessionMetadataInfo', ip: string, location: { __typename?: 'LocationInfo', country: string, city: string, latitude: number, longitude: number }, device: { __typename?: 'DeviceInfo', browser: string, os: string } } } };
+export type FindStocksByUserQuery = { __typename?: 'Query', findStocksByUser: Array<{ __typename?: 'StockInfo', stockId: string, title: string, stock: string, status: string, key: string, userId: string, createdAt: any }> };
+
+export type FindCurrentSessionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindCurrentSessionQuery = { __typename?: 'Query', findCurrentSession: { __typename?: 'SessionInfo', id: string, createdAt: any, metadata: { __typename?: 'SessionMetadataInfo', ip: string, location: { __typename?: 'LocationInfo', country: string, city: string, latitude: number, longitude: number }, device: { __typename?: 'DeviceInfo', browser: string, os: string } } } };
 
 export type FindProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -595,6 +625,37 @@ export function useVerifyAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type VerifyAccountMutationHookResult = ReturnType<typeof useVerifyAccountMutation>;
 export type VerifyAccountMutationResult = Apollo.MutationResult<VerifyAccountMutation>;
 export type VerifyAccountMutationOptions = Apollo.BaseMutationOptions<VerifyAccountMutation, VerifyAccountMutationVariables>;
+export const RemoveStockDocument = gql`
+    mutation RemoveStock($id: String!) {
+  removeStock(id: $id)
+}
+    `;
+export type RemoveStockMutationFn = Apollo.MutationFunction<RemoveStockMutation, RemoveStockMutationVariables>;
+
+/**
+ * __useRemoveStockMutation__
+ *
+ * To run a mutation, you first call `useRemoveStockMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveStockMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeStockMutation, { data, loading, error }] = useRemoveStockMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveStockMutation(baseOptions?: Apollo.MutationHookOptions<RemoveStockMutation, RemoveStockMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveStockMutation, RemoveStockMutationVariables>(RemoveStockDocument, options);
+      }
+export type RemoveStockMutationHookResult = ReturnType<typeof useRemoveStockMutation>;
+export type RemoveStockMutationResult = Apollo.MutationResult<RemoveStockMutation>;
+export type RemoveStockMutationOptions = Apollo.BaseMutationOptions<RemoveStockMutation, RemoveStockMutationVariables>;
 export const ChangeEmailDocument = gql`
     mutation ChangeEmail($data: ChangeEmailInput!) {
   changeEmail(data: $data)
@@ -927,8 +988,53 @@ export type FindNotificationsUnreadCountQueryHookResult = ReturnType<typeof useF
 export type FindNotificationsUnreadCountLazyQueryHookResult = ReturnType<typeof useFindNotificationsUnreadCountLazyQuery>;
 export type FindNotificationsUnreadCountSuspenseQueryHookResult = ReturnType<typeof useFindNotificationsUnreadCountSuspenseQuery>;
 export type FindNotificationsUnreadCountQueryResult = Apollo.QueryResult<FindNotificationsUnreadCountQuery, FindNotificationsUnreadCountQueryVariables>;
-export const FindCurrenSessionDocument = gql`
-    query FindCurrenSession {
+export const FindStocksByUserDocument = gql`
+    query FindStocksByUser {
+  findStocksByUser {
+    stockId
+    title
+    stock
+    status
+    key
+    userId
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useFindStocksByUserQuery__
+ *
+ * To run a query within a React component, call `useFindStocksByUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindStocksByUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindStocksByUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindStocksByUserQuery(baseOptions?: Apollo.QueryHookOptions<FindStocksByUserQuery, FindStocksByUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindStocksByUserQuery, FindStocksByUserQueryVariables>(FindStocksByUserDocument, options);
+      }
+export function useFindStocksByUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindStocksByUserQuery, FindStocksByUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindStocksByUserQuery, FindStocksByUserQueryVariables>(FindStocksByUserDocument, options);
+        }
+export function useFindStocksByUserSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindStocksByUserQuery, FindStocksByUserQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FindStocksByUserQuery, FindStocksByUserQueryVariables>(FindStocksByUserDocument, options);
+        }
+export type FindStocksByUserQueryHookResult = ReturnType<typeof useFindStocksByUserQuery>;
+export type FindStocksByUserLazyQueryHookResult = ReturnType<typeof useFindStocksByUserLazyQuery>;
+export type FindStocksByUserSuspenseQueryHookResult = ReturnType<typeof useFindStocksByUserSuspenseQuery>;
+export type FindStocksByUserQueryResult = Apollo.QueryResult<FindStocksByUserQuery, FindStocksByUserQueryVariables>;
+export const FindCurrentSessionDocument = gql`
+    query FindCurrentSession {
   findCurrentSession {
     id
     createdAt
@@ -950,36 +1056,36 @@ export const FindCurrenSessionDocument = gql`
     `;
 
 /**
- * __useFindCurrenSessionQuery__
+ * __useFindCurrentSessionQuery__
  *
- * To run a query within a React component, call `useFindCurrenSessionQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindCurrenSessionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFindCurrentSessionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindCurrentSessionQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFindCurrenSessionQuery({
+ * const { data, loading, error } = useFindCurrentSessionQuery({
  *   variables: {
  *   },
  * });
  */
-export function useFindCurrenSessionQuery(baseOptions?: Apollo.QueryHookOptions<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>) {
+export function useFindCurrentSessionQuery(baseOptions?: Apollo.QueryHookOptions<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>(FindCurrenSessionDocument, options);
+        return Apollo.useQuery<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>(FindCurrentSessionDocument, options);
       }
-export function useFindCurrenSessionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>) {
+export function useFindCurrentSessionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>(FindCurrenSessionDocument, options);
+          return Apollo.useLazyQuery<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>(FindCurrentSessionDocument, options);
         }
-export function useFindCurrenSessionSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>) {
+export function useFindCurrentSessionSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>(FindCurrenSessionDocument, options);
+          return Apollo.useSuspenseQuery<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>(FindCurrentSessionDocument, options);
         }
-export type FindCurrenSessionQueryHookResult = ReturnType<typeof useFindCurrenSessionQuery>;
-export type FindCurrenSessionLazyQueryHookResult = ReturnType<typeof useFindCurrenSessionLazyQuery>;
-export type FindCurrenSessionSuspenseQueryHookResult = ReturnType<typeof useFindCurrenSessionSuspenseQuery>;
-export type FindCurrenSessionQueryResult = Apollo.QueryResult<FindCurrenSessionQuery, FindCurrenSessionQueryVariables>;
+export type FindCurrentSessionQueryHookResult = ReturnType<typeof useFindCurrentSessionQuery>;
+export type FindCurrentSessionLazyQueryHookResult = ReturnType<typeof useFindCurrentSessionLazyQuery>;
+export type FindCurrentSessionSuspenseQueryHookResult = ReturnType<typeof useFindCurrentSessionSuspenseQuery>;
+export type FindCurrentSessionQueryResult = Apollo.QueryResult<FindCurrentSessionQuery, FindCurrentSessionQueryVariables>;
 export const FindProfileDocument = gql`
     query FindProfile {
   findProfile {
